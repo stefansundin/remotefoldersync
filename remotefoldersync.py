@@ -11,7 +11,7 @@ Currently it only checks the file modification time.
 
 Usage:
 
-autoftp.py --ftp -u [username] -p [password] -h [hostname] [local_folder] [remote_folder]
+remotefoldersync.py --ftp -u [username] -p [password] -h [hostname] [local_folder] [remote_folder]
 
 --ftp - specify the server as FTP instead of SSH.
 -u [username] - optional, the username.
@@ -137,7 +137,7 @@ def update_folder(con, local_folder, remote_folder):
 	
 def usage():
 	print 'Usage:'
-	print 'autoftp.py --ftp -u [username] -p [password] -h [hostname] [local_folder] [remote_folder]'
+	print 'remotefoldersync.py --ftp -u [username] -p [password] -h [hostname] [local_folder] [remote_folder]'
 	print ''
 	print 'If --ftp is specified, then FTP will be used.  Otherwise, SSH will be used.'
 	print ''
