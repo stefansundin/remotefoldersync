@@ -28,8 +28,8 @@ import os
 import hashlib
 import time
 import subprocess
-
 import ssh
+import getpass
 
 files = {}
 
@@ -137,9 +137,10 @@ def update_folder(con, local_folder, remote_folder):
 	
 def usage():
 	print 'Usage:'
-	print 'remotefoldersync.py --ftp -u [username] -p [password] -h [hostname] [local_folder] [remote_folder]'
+	print 'remotefoldersync.py --ftp -h hostname [-u username] [-p password] [--key keyfile] local_folder remote_folder'
 	print ''
 	print 'If --ftp is specified, then FTP will be used.  Otherwise, SSH will be used.'
+	print 'Username and password will be prompted for if not provided.'
 	print ''
 	exit()
 
@@ -150,21 +151,27 @@ def main():
 	remote_folder = None
 	use_ftp = False
 	
-	opts, args = getopt.getopt(sys.argv[1:], 'u:p:h:', ['key=', 'ftp'])
+	opts, args = getopt.getopt(sys.argv[1:], 'h:u:p:', ['key=', 'ftp'])
 	for name, value in opts:
-		if name == '-u':
+		if name == '-h':
+			hostname = value
+		elif name == '-u':
 			username = value
 		elif name == '-p' and value.strip() != '':
 			password = value
-		elif name == '-h':
-			hostname = value
 		elif name == '--key' and value.strip() != '':
 			keyfile = value
 		elif name == '--ftp':
 			use_ftp = True
-	
-	if len(args) < 2 or username is None or hostname is None or (password is None and keyfile is None):
+        
+	if len(args) < 2 or hostname is None:
 		usage()
+	
+        if username is None:
+                username = raw_input("Enter username: ")
+        
+	if password is None and keyfile is None:
+                password = getpass.getpass("Enter password: ")
 	
 	local_folder = args[0]
 	remote_folder = args[1]
