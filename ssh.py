@@ -11,8 +11,8 @@ import sys
 import tempfile
 
 class Connection(object):
-	"""Connects and logs into the specified hostname. 
-	Arguments that are not given are guessed from the environment.""" 
+	"""Connects and logs into the specified hostname.
+	Arguments that are not given are guessed from the environment."""
 
 	def __init__(self,
 				 host,
@@ -34,7 +34,7 @@ class Connection(object):
 		self._transport = paramiko.Transport((host, port))
 		self._tranport_live = True
 		# Authenticate the transport.
-		
+
 		if password:
 			# Using Password.
 			self._transport.connect(username = username, password = password)
@@ -52,7 +52,7 @@ class Connection(object):
 			private_key_file = os.path.expanduser(private_key)
 			rsa_key = paramiko.RSAKey.from_private_key_file(private_key_file)
 			self._transport.connect(username = username, pkey = rsa_key)
-	
+
 	def _sftp_connect(self):
 		"""Establish the SFTP connection."""
 		if not self._sftp_live:
@@ -99,9 +99,9 @@ class Connection(object):
 		self.close()
 
 def usage():
-	print 'Usage:'
-	print 'ssh.py -u [username] -p [password] -h [hostname] --key [key_filename] [local_filename] [remote_filename]'
-	print ''
+	print('Usage:')
+	print('ssh.py -u [username] -p [password] -h [hostname] --key [key_filename] [local_filename] [remote_filename]')
+	print('')
 	exit()
 
 def main():
@@ -111,7 +111,7 @@ def main():
 	keyfile = None
 	local_filename = None
 	remote_filename = None
-	
+
 	opts, args = getopt.getopt(sys.argv[1:], 'u:p:h:', ['key='])
 	for name, value in opts:
 		if name == '-u':
@@ -122,30 +122,30 @@ def main():
 			hostname = value
 		elif name == '--key' and value.strip() != '':
 			keyfile = value
-	
+
 	if len(args) < 2 or username is None or hostname is None or (password is None and keyfile is None):
 		usage()
-	
+
 	local_filename = args[0]
 	remote_filename = args[1]
-	
-	#print 'host: %s' % hostname
-	#print 'username: %s' % username
-	#print 'password: %s' % password
-	#print 'keyfile: %s' % keyfile
-	#print 'local_filename: %s' % local_filename
-	#print 'remote_filename: %s' % remote_filename
-		
+
+	#print('host: %s' % hostname)
+	#print('username: %s' % username)
+	#print('password: %s' % password)
+	#print('keyfile: %s' % keyfile)
+	#print('local_filename: %s' % local_filename)
+	#print('remote_filename: %s' % remote_filename)
+
 	con = Connection(host=hostname, username=username, password=password, private_key=keyfile)
-	#print 'Putting file "%s" to "%s"' % (local_filename, remote_filename)
+	#print('Putting file "%s" to "%s"' % (local_filename, remote_filename))
 	con.put(local_filename, remote_filename)
-	
+
 	#results = con.execute('pwd')
-	#print 'results: %r' % results
-	#
+	#print('results: %r' % results)
+
 	#results = con.execute('ls')
-	#print 'results: %r' % results
-	
+	#print('results: %r' % results)
+
 	con.close()
 
 if __name__ == "__main__":
