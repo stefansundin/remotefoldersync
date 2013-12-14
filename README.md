@@ -1,7 +1,7 @@
 remotefoldersync
 ================
 
-Fork of rocketmonkeys' project on Google Code, with Python3 support.
+Fork of [rocketmonkeys' project on Google Code](https://code.google.com/p/remotefoldersync/), with Python3 support.
 
 ## Windows instructions 
 1. Install Python3.
